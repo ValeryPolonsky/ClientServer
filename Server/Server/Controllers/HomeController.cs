@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Northwind.Infrastructure.Models;
 using System.Diagnostics;
 
 namespace Server.Controllers
@@ -16,7 +17,9 @@ namespace Server.Controllers
         [Route("/[controller]/GetData")]
         public string GetData()
         {
-            return "Test";
+            var context = new NorthwindContext();
+            var orders = context.Orders.ToList();
+            return $"Number of orders: {orders.Count}";
         }
     }
 }

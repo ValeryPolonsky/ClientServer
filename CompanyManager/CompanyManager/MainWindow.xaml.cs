@@ -20,6 +20,12 @@ namespace CompanyManager
         public MainWindow()
         {
             InitializeComponent();
+            GetData();
+        }
+
+        private async void GetData()
+        {
+            var data = await ApiConsumer.Instance.GetData();
         }
     }
 }
