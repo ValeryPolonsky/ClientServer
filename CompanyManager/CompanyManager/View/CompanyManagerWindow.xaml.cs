@@ -10,22 +10,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CompanyManager
+namespace CompanyManager.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CompanyManagerWindow : Window
     {
-        public MainWindow()
+        public CompanyManagerWindow()
         {
             InitializeComponent();
-            GetData();
-        }
-
-        private async void GetData()
-        {
-            var data = await ApiConsumer.Instance.GetData();
         }
     }
 }
