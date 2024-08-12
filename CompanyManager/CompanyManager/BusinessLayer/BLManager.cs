@@ -22,7 +22,7 @@ namespace CompanyManager.BusinessLayer
             LoadData();
         }
 
-        public ObservableCollection<OrderModel> Orders { get; set; }
+        public ObservableCollection<OrderModel> Orders { get; private set; }
 
         public async Task<List<OrderModel>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
         {

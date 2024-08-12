@@ -5,10 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CompanyManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <DataGrid AutoGenerateColumns="False"
-                  ItemsSource="{Binding Orders}">
+        Title="MainWindow" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBox Text="{Binding CompanyName}"
+                     Width="150"/>
+            <DatePicker Text="{Binding FromDate}"
+                        Margin="10,0,0,0"/>
+            <DatePicker Text="{Binding ToDate}"
+                        Margin="10,0,0,0"/>
+            <Button Content="Filter"
+                    Command="{Binding FilterCommand}"
+                    Margin="10,0,0,0"
+                    Width="100"/>
+        </StackPanel>
+        <TextBlock Grid.Row="1"
+                   Text="Orders" 
+                   HorizontalAlignment="Left"
+                   FontSize="20"
+                   FontWeight="Bold"/>
+        <DataGrid Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Orders}"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" />
                 <DataGridTextColumn Header="CompanyName" Binding="{Binding CompanyName}" Width="*" />
