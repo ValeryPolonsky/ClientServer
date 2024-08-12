@@ -50,7 +50,7 @@ namespace Client
             });
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             
-            var response = await client.PostAsync($"{serverUrl}/home/getorders", stringContent);
+            var response = await client.PostAsync($"{serverUrl}/Home/GetOrders", stringContent);
             if (response.IsSuccessStatusCode)
             {
                 var responseJson = await response.Content.ReadAsStringAsync();

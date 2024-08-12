@@ -30,19 +30,27 @@ namespace Server.Controllers
         [Route("/[controller]/GetOrders")]
         public async Task<ActionResult<GetOrdersResponse>> GetOrders([FromBody] GetOrdersRequest request)
         {
-            var orders = await NorthwindAccessLayer.Instance.GetOrders(request.FromDate, request.ToDate);
+            var orders = await NorthwindAccessLayer.Instance.GetOrders(request.FromDate, request.ToDate, request.CompanyName);
+            var customers = await NorthwindAccessLayer.Instance.GetCustomers();
+            var customersById = new Dictionary<string, Customer>();
             var orderDtos = new List<OrderDto>();
-            orders.ForEach(o => orderDtos.Add(new OrderDto 
-            { 
+            customers.ForEach(c => 
+            {
+                customersById[c.CustomerId] = c;
+            });
+            
+            orders.ForEach(o => orderDtos.Add(new OrderDto
+            {
                 Id = o.OrderId,
-                CompanyName = "",
+                CompanyName = customersById[o.CustomerId].CompanyName,
+                ContactName = customersById[o.CustomerId].ContactName,
                 OrderDate = o.OrderDate,
                 ShipName = o.ShipName,
                 ShipAddress = o.ShipAddress
             }));
 
-            return Ok(new GetOrdersResponse 
-            { 
+            return Ok(new GetOrdersResponse
+            {
                 OrderDtos = orderDtos
             });
         }

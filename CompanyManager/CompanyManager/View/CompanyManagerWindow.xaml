@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding Orders}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" />
+                <DataGridTextColumn Header="CompanyName" Binding="{Binding CompanyName}" Width="*" />
+                <DataGridTextColumn Header="ContactName" Binding="{Binding ContactName}" Width="*" />
+                <DataGridTextColumn Header="OrderDate" Binding="{Binding OrderDate}" Width="*" />
+                <DataGridTextColumn Header="ShipName" Binding="{Binding ShipName}" Width="*" />
+                <DataGridTextColumn Header="ShipAddress" Binding="{Binding ShipAddress}" Width="*" />
+            </DataGrid.Columns>  
+        </DataGrid>
     </Grid>
 </Window>

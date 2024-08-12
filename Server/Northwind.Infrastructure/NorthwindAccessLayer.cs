@@ -27,5 +27,30 @@ namespace Northwind.Infrastructure
                 return orders;               
             }
         }
+
+        public async Task<List<Order>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var customers = await db.Customers.Where(c => c.CompanyName.ToLower().Contains(companyName.ToLower()))
+                                                  .ToListAsync();
+                var customerIds = customers.Select(c => c.CustomerId)
+                                           .ToHashSet();
+                var orders = await db.Orders.Where(o => customerIds.Contains(o.CustomerId) &&
+                                                        o.OrderDate >= fromDate && 
+                                                        o.OrderDate <= toDate)
+                                            .ToListAsync();
+                return orders;
+            }
+        }
+
+        public async Task<List<Customer>> GetCustomers()
+        {
+            using (var db = new NorthwindContext())
+            {
+                var customers = await db.Customers.ToListAsync();
+                return customers;
+            }
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace CompanyManager.BusinessLayer
             {
                 Id = o.Id,
                 CompanyName = o.CompanyName,
+                ContactName = o.ContactName,
                 OrderDate = o.OrderDate,
                 ShipName = o.ShipName,
                 ShipAddress = o.ShipAddress,

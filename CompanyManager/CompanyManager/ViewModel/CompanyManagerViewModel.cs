@@ -1,4 +1,5 @@
-﻿using CompanyManager.BusinessLayer;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CompanyManager.BusinessLayer;
 using CompanyManager.Model;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,10 @@ using System.Threading.Tasks;
 
 namespace CompanyManager.ViewModel
 {
-    public class CompanyManagerViewModel
+    public class CompanyManagerViewModel : ObservableObject
     {
         public CompanyManagerViewModel()
         {
-            var orders = BLManager.Instance.Orders;
         }
 
         public ObservableCollection<OrderModel> Orders => BLManager.Instance.Orders;

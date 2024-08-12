@@ -3,19 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CompanyManager.Model
 {
-    public class OrderModel
+    public class OrderModel : ObservableObject
     {
-        public int Id { get; set; }
+        private int id;
+        public int Id 
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
-        public string? CompanyName { get; set; }
+        private string? companyName;
+        public string? CompanyName
+        {
+            get => companyName;
+            set => SetProperty(ref companyName, value);
+        }
 
-        public DateTime? OrderDate { get; set; }
+        private string? contactName;
+        public string? ContactName
+        {
+            get => contactName;
+            set => SetProperty(ref contactName, value);
+        }
 
-        public string? ShipName { get; set; }
+        private DateTime? orderDate;
+        public DateTime? OrderDate
+        {
+            get => orderDate;
+            set => SetProperty(ref orderDate, value);
+        }
 
-        public string? ShipAddress { get; set; }
+        private string? shipName;
+        public string? ShipName
+        {
+            get => shipName;
+            set => SetProperty(ref shipName, value);
+        }
+
+        private string? shipAddress;
+        public string? ShipAddress
+        {
+            get => shipAddress;
+            set => SetProperty(ref shipAddress, value);
+        }
     }
 }

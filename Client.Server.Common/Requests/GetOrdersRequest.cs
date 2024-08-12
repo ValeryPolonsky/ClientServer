@@ -10,6 +10,6 @@ namespace Client.Server.Common.Requests
     {
         public DateTime FromDate { get; set; } 
         public DateTime ToDate { get; set; }
-        public string? CompanyName { get; set; }
+        public string CompanyName { get; set; }
     }
 }
