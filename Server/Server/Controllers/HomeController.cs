@@ -17,15 +17,6 @@ namespace Server.Controllers
             _logger = logger;
         }        
 
-        [HttpGet]
-        [Route("/[controller]/GetData")]
-        public string GetData()
-        {
-            var context = new NorthwindContext();
-            var orders = context.Orders.ToList();
-            return $"Number of orders: {orders.Count}";
-        }
-
         [HttpPost]
         [Route("/[controller]/GetOrders")]
         public async Task<ActionResult<GetOrdersResponse>> GetOrders([FromBody] GetOrdersRequest request)

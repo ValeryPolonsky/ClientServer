@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:CompanyManager"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="450" 
-        Width="800"
+        Height="800" 
+        Width="1200"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="5,5,5,5">
         <Grid.RowDefinitions>
@@ -21,9 +21,9 @@
                     HorizontalAlignment="Center">
             <TextBox Text="{Binding CompanyName}"
                      Width="150"/>
-            <DatePicker Text="{Binding FromDate}"
+            <DatePicker SelectedDate="{Binding FromDate}"
                         Margin="10,0,0,0"/>
-            <DatePicker Text="{Binding ToDate}"
+            <DatePicker SelectedDate="{Binding ToDate}"
                         Margin="10,0,0,0"/>
             <Button Content="Filter"
                     Command="{Binding FilterCommand}"

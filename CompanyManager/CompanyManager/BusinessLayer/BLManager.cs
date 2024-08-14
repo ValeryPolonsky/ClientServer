@@ -24,7 +24,19 @@ namespace CompanyManager.BusinessLayer
 
         public ObservableCollection<OrderModel> Orders { get; private set; }
 
-        public async Task<List<OrderModel>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
+        public async Task FilterOrders(DateTime fromDate, DateTime toDate, string companyName)
+        {
+            var orders = await GetOrders(fromDate, toDate, companyName);
+            Orders.Clear();
+            orders.ForEach(o => Orders.Add(o));
+        }
+
+        private async void LoadData()
+        {
+            await FilterOrders(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1), string.Empty);
+        }
+
+        private async Task<List<OrderModel>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
         {
             var orderDtos = await ApiConsumer.Instance.GetOrders(fromDate, toDate, companyName);
             var orderModels = new List<OrderModel>();
@@ -39,13 +51,6 @@ namespace CompanyManager.BusinessLayer
             }));
 
             return orderModels;
-        }
-
-        private async void LoadData()
-        {
-            var orders = await GetOrders(new DateTime(1995, 1, 1), new DateTime(2000, 1, 1), "");
-            Orders.Clear();
-            orders.ForEach(o => Orders.Add(o));
         }
     }
 }
