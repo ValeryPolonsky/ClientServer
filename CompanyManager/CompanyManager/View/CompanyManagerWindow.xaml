@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CompanyManager"
+        xmlns:sys="clr-namespace:System.Data;assembly=System.Data"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="800" 
@@ -36,10 +37,35 @@
                    FontSize="20"
                    FontWeight="Bold"/>
         <DataGrid Grid.Row="2"
+                  x:Name="DataGridOrders"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Orders}"
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch">
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <Expander Expanded="Expander_Expanded" 
+                              Collapsed="Expander_Collapsed">
+                    </Expander>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="Products" 
+                                   HorizontalAlignment="Left"
+                                   FontSize="20"
+                                   FontWeight="Bold"/>
+                        <DataGrid ItemsSource="{Binding Products}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding NestedProperty1}" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding NestedProperty1}" />
+                                <DataGridTextColumn Header="UnitPrice" Binding="{Binding NestedProperty1}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" />
                 <DataGridTextColumn Header="CompanyName" Binding="{Binding CompanyName}" Width="*" />

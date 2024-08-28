@@ -26,6 +26,13 @@ namespace CompanyManager.ViewModel
 
         public ObservableCollection<OrderModel> Orders => BLManager.Instance.Orders;
 
+        private bool isExpanded;
+        public bool IsExpanded
+        {
+            get => isExpanded;
+            set => SetProperty(ref isExpanded, value);
+        }
+
         private DateTime? fromDate;
         public DateTime? FromDate
         {

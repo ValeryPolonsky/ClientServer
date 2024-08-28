@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +51,12 @@ namespace CompanyManager.Model
         {
             get => shipAddress;
             set => SetProperty(ref shipAddress, value);
+        }
+
+        private ObservableCollection<object> products;
+        public ObservableCollection<object> Products 
+        {
+            get => products;
         }
     }
 }
