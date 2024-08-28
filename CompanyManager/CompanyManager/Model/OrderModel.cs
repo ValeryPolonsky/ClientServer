@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CompanyManager.BusinessLayer;
 
 namespace CompanyManager.Model
 {
@@ -53,10 +55,30 @@ namespace CompanyManager.Model
             set => SetProperty(ref shipAddress, value);
         }
 
-        private ObservableCollection<object> products;
-        public ObservableCollection<object> Products 
+        private ObservableCollection<ProductModel>? products;
+        public ObservableCollection<ProductModel>? Products 
         {
-            get => products;
+            get
+            {
+                if (products == null)
+                    FillProducts();
+
+                return products;
+            }
+            private set => SetProperty(ref products, value);
+        }
+
+        private async void FillProducts()
+        {            
+            var products = await BLManager.Instance.GetProducts(Id);
+            Application.Current.Dispatcher.Invoke(() => 
+            {
+                Products = new ObservableCollection<ProductModel>();
+                products.ForEach(p =>
+                {
+                    Products.Add(p);
+                });
+            });
         }
     }
 }

@@ -31,6 +31,21 @@ namespace CompanyManager.BusinessLayer
             orders.ForEach(o => Orders.Add(o));
         }
 
+        public async Task<List<ProductModel>> GetProducts(int orderId)
+        {
+            var productDtos = await ApiConsumer.Instance.GetProducts(orderId);
+            var products = new List<ProductModel>();
+            productDtos.ForEach(p => products.Add(new ProductModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                UnitPrice = p.UnitPrice,
+                Quantity = p.Quantity
+            }));
+
+            return products;
+        }
+
         private async void LoadData()
         {
             await FilterOrders(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1), string.Empty);
@@ -51,6 +66,6 @@ namespace CompanyManager.BusinessLayer
             }));
 
             return orderModels;
-        }
+        }      
     }
 }

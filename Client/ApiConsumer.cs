@@ -61,5 +61,26 @@ namespace Client
             else
                 return new List<OrderDto>(); 
         }
+
+        public async Task<List<ProductDto>> GetProducts(int orderId)
+        {
+            var client = new HttpClient();
+            var jsonData = JsonConvert.SerializeObject(new GetProductsRequest
+            {
+                OrderId = orderId
+            });
+            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"{serverUrl}/Home/GetProducts", stringContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var getOrdersResponse = JsonConvert.DeserializeObject<GetProductsResponse>(responseJson);
+
+                return getOrdersResponse?.ProductDtos ?? new List<ProductDto>();
+            }
+            else
+                return new List<ProductDto>();
+        }
     }
 }

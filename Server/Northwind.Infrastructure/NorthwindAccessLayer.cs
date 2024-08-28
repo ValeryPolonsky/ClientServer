@@ -52,5 +52,31 @@ namespace Northwind.Infrastructure
                 return customers;
             }
         }
+
+        public async Task<List<Product>> GetProducts(int orderId)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var orderDetails = await db.OrderDetails.Where(od => od.OrderId == orderId)
+                    .ToListAsync();
+                var productIds = orderDetails.Select(od => od.ProductId)
+                    .ToHashSet();
+                var products = await db.Products.Where(p => productIds.Contains(p.ProductId))
+                    .ToListAsync();
+
+                return products;
+            }
+        }
+
+        public async Task<List<OrderDetail>> GetOrderDetails(int orderId)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var orderDetails = await db.OrderDetails.Where(od => od.OrderId == orderId)
+                    .ToListAsync();
+                
+                return orderDetails;
+            }
+        }
     }
 }

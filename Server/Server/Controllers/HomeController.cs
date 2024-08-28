@@ -45,5 +45,31 @@ namespace Server.Controllers
                 OrderDtos = orderDtos
             });
         }
+
+        [HttpPost]
+        [Route("/[controller]/GetProducts")]
+        public async Task<ActionResult<GetProductsResponse>>GetProducts([FromBody] GetProductsRequest request)
+        {
+            var products = await NorthwindAccessLayer.Instance.GetProducts(request.OrderId);
+            var orderDetails = await NorthwindAccessLayer.Instance.GetOrderDetails(request.OrderId);
+            var productDtos = new List<ProductDto>();
+
+            products.ForEach(p => 
+            {
+                productDtos.Add(new ProductDto 
+                { 
+                    Id = p.ProductId,
+                    Name = p.ProductName,
+                    UnitPrice = p.UnitPrice,
+                    Quantity = orderDetails.First(od => od.OrderId == request.OrderId && 
+                        od.ProductId == p.ProductId).Quantity
+                });
+            });
+
+            return Ok(new GetProductsResponse 
+            { 
+                ProductDtos = productDtos
+            });
+        }
     }
 }

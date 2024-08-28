@@ -56,11 +56,13 @@
                                    HorizontalAlignment="Left"
                                    FontSize="20"
                                    FontWeight="Bold"/>
-                        <DataGrid ItemsSource="{Binding Products}">
+                        <DataGrid ItemsSource="{Binding Products}"
+                                  AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Id" Binding="{Binding NestedProperty1}" />
-                                <DataGridTextColumn Header="Name" Binding="{Binding NestedProperty1}" />
-                                <DataGridTextColumn Header="UnitPrice" Binding="{Binding NestedProperty1}" />
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                                <DataGridTextColumn Header="UnitPrice" Binding="{Binding UnitPrice}" />
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>
