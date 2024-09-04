@@ -22,22 +22,7 @@ namespace Client
         private ApiConsumer()
         {
             serverUrl = "https://localhost:7180";
-        }    
-        
-        public async Task<string> GetData()
-        {
-            var client = new HttpClient();
-            var response = await client.GetAsync($"{serverUrl}/home/getdata");
-            var data = string.Empty;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content= await response.Content.ReadAsStringAsync();
-                data = content;
-            }
-            
-            return data;
-        }    
+        }            
 
         public async Task<List<OrderDto>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
         {

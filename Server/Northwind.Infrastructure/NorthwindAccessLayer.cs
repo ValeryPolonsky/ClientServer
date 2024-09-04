@@ -8,75 +8,60 @@ using System.Threading.Tasks;
 
 namespace Northwind.Infrastructure
 {
-    public class NorthwindAccessLayer
+    public class NorthwindAccessLayer : INorthwindAccessLayer
     {
-        private static readonly Lazy<NorthwindAccessLayer> lazyInit = new Lazy<NorthwindAccessLayer>(() => new NorthwindAccessLayer());
-        public static NorthwindAccessLayer Instance => lazyInit.Value;
+        private INorthwindContext _context;
 
-        private NorthwindAccessLayer()
+        public NorthwindAccessLayer(INorthwindContext context)
         {
+            _context = context;
         }
 
         public async Task<List<Order>> GetOrders(DateTime fromDate, DateTime toDate)
         {
-            using (var db = new NorthwindContext())
-            {
-                var orders = await db.Orders.Where(o => o.OrderDate >= fromDate &&
-                                                        o.OrderDate <= toDate)
-                                            .ToListAsync();
-                return orders;               
-            }
+            var orders = await _context.Orders.Where(o => o.OrderDate >= fromDate &&
+                                                    o.OrderDate <= toDate)
+                                        .ToListAsync();
+            return orders;
         }
 
         public async Task<List<Order>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
         {
-            using (var db = new NorthwindContext())
-            {
-                var customers = await db.Customers.Where(c => c.CompanyName.ToLower().Contains(companyName.ToLower()))
-                                                  .ToListAsync();
-                var customerIds = customers.Select(c => c.CustomerId)
-                                           .ToHashSet();
-                var orders = await db.Orders.Where(o => customerIds.Contains(o.CustomerId) &&
-                                                        o.OrderDate >= fromDate && 
-                                                        o.OrderDate <= toDate)
-                                            .ToListAsync();
-                return orders;
-            }
+            var customers = await _context.Customers.Where(c => c.CompanyName.ToLower().Contains(companyName.ToLower()))
+                                                .ToListAsync();
+            var customerIds = customers.Select(c => c.CustomerId)
+                                        .ToHashSet();
+            var orders = await _context.Orders.Where(o => customerIds.Contains(o.CustomerId) &&
+                                                    o.OrderDate >= fromDate &&
+                                                    o.OrderDate <= toDate)
+                                        .ToListAsync();
+            return orders;
         }
 
         public async Task<List<Customer>> GetCustomers()
         {
-            using (var db = new NorthwindContext())
-            {
-                var customers = await db.Customers.ToListAsync();
-                return customers;
-            }
+            var customers = await _context.Customers.ToListAsync();
+            return customers;
         }
 
         public async Task<List<Product>> GetProducts(int orderId)
         {
-            using (var db = new NorthwindContext())
-            {
-                var orderDetails = await db.OrderDetails.Where(od => od.OrderId == orderId)
-                    .ToListAsync();
-                var productIds = orderDetails.Select(od => od.ProductId)
-                    .ToHashSet();
-                var products = await db.Products.Where(p => productIds.Contains(p.ProductId))
-                    .ToListAsync();
+            var orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId)
+                .ToListAsync();
+            var productIds = orderDetails.Select(od => od.ProductId)
+                .ToHashSet();
+            var products = await _context.Products.Where(p => productIds.Contains(p.ProductId))
+                .ToListAsync();
 
-                return products;
-            }
+            return products;
         }
 
         public async Task<List<OrderDetail>> GetOrderDetails(int orderId)
         {
-            using (var db = new NorthwindContext())
-            {
-                var orderDetails = await db.OrderDetails.Where(od => od.OrderId == orderId)
-                    .ToListAsync();
-                
-                return orderDetails;
-            }
+            var orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId)
+                .ToListAsync();
+
+            return orderDetails;
         }
     }
 }

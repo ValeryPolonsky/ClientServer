@@ -11,18 +11,21 @@ namespace Server.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private INorthwindAccessLayer _northwindAccessLayer;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            INorthwindAccessLayer northwindAccessLayer)
         {
             _logger = logger;
+            _northwindAccessLayer = northwindAccessLayer;
         }        
 
         [HttpPost]
         [Route("/[controller]/GetOrders")]
         public async Task<ActionResult<GetOrdersResponse>> GetOrders([FromBody] GetOrdersRequest request)
         {
-            var orders = await NorthwindAccessLayer.Instance.GetOrders(request.FromDate, request.ToDate, request.CompanyName);
-            var customers = await NorthwindAccessLayer.Instance.GetCustomers();
+            var orders = await _northwindAccessLayer.GetOrders(request.FromDate, request.ToDate, request.CompanyName);
+            var customers = await _northwindAccessLayer.GetCustomers();
             var customersById = new Dictionary<string, Customer>();
             var orderDtos = new List<OrderDto>();
             customers.ForEach(c => 
@@ -50,8 +53,8 @@ namespace Server.Controllers
         [Route("/[controller]/GetProducts")]
         public async Task<ActionResult<GetProductsResponse>>GetProducts([FromBody] GetProductsRequest request)
         {
-            var products = await NorthwindAccessLayer.Instance.GetProducts(request.OrderId);
-            var orderDetails = await NorthwindAccessLayer.Instance.GetOrderDetails(request.OrderId);
+            var products = await _northwindAccessLayer.GetProducts(request.OrderId);
+            var orderDetails = await _northwindAccessLayer.GetOrderDetails(request.OrderId);
             var productDtos = new List<ProductDto>();
 
             products.ForEach(p => 

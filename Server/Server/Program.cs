@@ -1,22 +1,36 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+using Northwind.Infrastructure;
+using Northwind.Infrastructure.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Adding Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "CompanyManager API",
         Version = "v1",
-        Description = "Northwind API"
+        Description = "CompanyManager API"
     });
 });
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+//Adding controllers
+builder.Services.AddControllersWithViews(); 
+
+//Adding configurations
+var configurationBuilder = new ConfigurationBuilder();
+configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+var configuration = configurationBuilder.Build();
+builder.Services.AddSingleton<IConfiguration>(configuration);
+
+builder.Services.AddScoped<INorthwindContext, NorthwindContext>();
+builder.Services.AddScoped<INorthwindAccessLayer, NorthwindAccessLayer>();
 
 var app = builder.Build();
 
@@ -30,6 +44,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseSwagger();
 app.UseSwaggerUI(options => 
 {

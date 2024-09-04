@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Northwind.Infrastructure.Models;
 
-public partial class NorthwindContext : DbContext
+public partial class NorthwindContext : DbContext, INorthwindContext
 {
-    public NorthwindContext()
+    private IConfiguration _configuration;
+
+    public NorthwindContext(IConfiguration configuration)
     {
+        _configuration = configuration;
     }
 
-    public NorthwindContext(DbContextOptions<NorthwindContext> options)
+    public NorthwindContext(DbContextOptions<NorthwindContext> options,
+        IConfiguration configuration)
         : base(options)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<AlphabeticalListOfProduct> AlphabeticalListOfProducts { get; set; }
@@ -70,7 +76,9 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<Territory> Territories { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source = VALER_POL_LAP; Initial Catalog = Northwind; Integrated Security=SSPI; Persist Security Info = True; Connection Timeout=3600;TrustServerCertificate=True");
+    {       
+        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("NorthwindConnection"));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
