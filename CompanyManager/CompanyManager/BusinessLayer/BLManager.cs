@@ -13,8 +13,8 @@ namespace CompanyManager.BusinessLayer
 {
     public sealed class BLManager
     {
-        private static readonly Lazy<BLManager> lazy = new Lazy<BLManager>(() => new BLManager());
-        public static BLManager Instance => lazy.Value;
+        private static readonly Lazy<BLManager> _lazyInit = new Lazy<BLManager>(() => new BLManager());
+        public static BLManager Instance => _lazyInit.Value;
 
         private BLManager()
         {

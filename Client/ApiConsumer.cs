@@ -15,14 +15,19 @@ namespace Client
 {
     public sealed class ApiConsumer
     {
-        private string serverUrl;
-        private static readonly Lazy<ApiConsumer> lazy = new Lazy<ApiConsumer>(() => new ApiConsumer());
-        public static ApiConsumer Instance => lazy.Value; 
+        private string _serverUrl;
+        private static readonly Lazy<ApiConsumer> _lazyInit = new Lazy<ApiConsumer>(() => new ApiConsumer());
+        public static ApiConsumer Instance => _lazyInit.Value; 
 
         private ApiConsumer()
         {
-            serverUrl = "https://localhost:7180";
-        }            
+            _serverUrl = string.Empty;
+        }   
+        
+        public void Init(string serverUrl)
+        {
+            _serverUrl = serverUrl;
+        }
 
         public async Task<List<OrderDto>> GetOrders(DateTime fromDate, DateTime toDate, string companyName)
         {
@@ -35,7 +40,7 @@ namespace Client
             });
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             
-            var response = await client.PostAsync($"{serverUrl}/Home/GetOrders", stringContent);
+            var response = await client.PostAsync($"{_serverUrl}/Home/GetOrders", stringContent);
             if (response.IsSuccessStatusCode)
             {
                 var responseJson = await response.Content.ReadAsStringAsync();
@@ -56,7 +61,7 @@ namespace Client
             });
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"{serverUrl}/Home/GetProducts", stringContent);
+            var response = await client.PostAsync($"{_serverUrl}/Home/GetProducts", stringContent);
             if (response.IsSuccessStatusCode)
             {
                 var responseJson = await response.Content.ReadAsStringAsync();
